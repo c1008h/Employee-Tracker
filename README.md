@@ -7,6 +7,7 @@ This app uses Node.js and mySql to create a database that collects information a
 - <a href='https://nodejs.org/en/'>Node JS</a>
 - <a href='https://www.npmjs.com/package/inquirer'>Inquirer</a>
 - <a href='https://www.mysql.com/'>mySql</a>
+- <a href='https://www.npmjs.com/package/console.table'>console.table</a>
 
 ## Table of Contents
 - [Employee Tracker](#employee-tracker)
@@ -31,7 +32,7 @@ Use this command line to clone this repo before running the program:
 Open the repo in VSC then open the terminal to the file `server.js`. Then start mySQL by running the lines `mysql -u root -p`. Enter your password when it askes you to. Once mysql is running, `SOURCE db/schema.sql;` then `SOURCE db/seeds.sql;` and exit. Run `npm init` and `npm i` then `node server.js` to start the app. 
 
 ## Contribution
-Feel free to fork my repo and use it as your README generator. 
+Feel free to fork this repo and play with the code yourself to get a better understand.
 
 ## License
 
