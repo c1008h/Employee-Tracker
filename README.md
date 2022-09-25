@@ -1,7 +1,8 @@
 # Employee Tracker
+![Untitled_ Sep 24, 2022 11_37 PM](https://user-images.githubusercontent.com/102135325/192131522-d5eb5d4e-9280-4c40-9ca3-ac916cf3b749.gif)
 
 ## Description
-This app uses Node.js and mySql to create a database that collects information about their employees in the command line and organizes it into the database. 
+This app uses Node.js and MySql to create a database that collects information about their employees in the command line and organizes it into the database. 
 ### Created with:
 - <a href='https://javascript.info/'>JavaScript</a>
 - <a href='https://nodejs.org/en/'>Node JS</a>
@@ -23,13 +24,14 @@ This app uses Node.js and mySql to create a database that collects information a
   - [Contact](#contact)
 
 ## Instructions
+Open the repo in VSC then open the terminal to the file `server.js`. Then start mySQL by running the lines `mysql -u root -p`. Enter your password when it askes you to. Once mysql is running, `SOURCE db/schema.sql;` then `SOURCE db/seeds.sql;` and exit. Run `npm init --yes` and `npm install` then `npm start` to start the app. 
 
 ### Installation
 Use this command line to clone this repo before running the program:
 >`git@github.com:c1008h/Employee-Tracker.git`
 
 ### Usage
-Open the repo in VSC then open the terminal to the file `server.js`. Then start mySQL by running the lines `mysql -u root -p`. Enter your password when it askes you to. Once mysql is running, `SOURCE db/schema.sql;` then `SOURCE db/seeds.sql;` and exit. Run `npm init` and `npm i` then `node server.js` to start the app. 
+Prompts will show up in the terminal. Users will be able to pick between prompts by using their up and down keys. 
 
 ## Contribution
 Feel free to fork this repo and play with the code yourself to get a better understand.
