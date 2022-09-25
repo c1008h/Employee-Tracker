@@ -1,123 +1,141 @@
 const inquirer = require('inquirer');
-const express = require('express');
 const mysql = require('mysql2');
-const fs = require('fs');
 
-const PORT = process.env.PORT || 3001;
-const app = express();
+require("console.table");
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+const db = mysql.createConnection(
+    {
+        host: '127.0.0.1',
+        user: 'root',
+        password: 'Anything$1',
+        database: 'employees_db'
+    },
+    console.log(`Connected to the courses_db database.`)
+);
+const questions = [{
+    type: 'list',
+    name: 'menu',
+    message: 'What would you like to do?',
+    choices: ['View all departments', 'View all roles', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'Update an employee role']
+}];
+const deptQuestion = [{
+    type: 'input',
+    name: 'department',
+    message: 'Enter the name of the department'
+}]
+const roleQuestion = [{
+    type: 'input',
+    name: 'title',
+    message: 'Enter the name for the role',
+},
+{
+    type: 'input',
+    name: 'salary',
+    message: 'Enter the salary for the role',
+},
+{
+    type: 'input',
+    name: 'department_id',
+    message: 'Enter the department for the role',
+}
+];
+const employeeQuestion = [{
+    type: 'input',
+    name: 'first_name',
+    message: 'Enter the employee first name',
+},
+{
+    type: 'input',
+    name: 'last_name',
+    message: 'Enter the employee last name',
+},
+{
+    type: 'input',
+    name: 'role_id',
+    message: 'Enter the employee role id'
+}
+];
 
-// const data = require('./util/employee')
-// console.log(data)
-
-const { getAllDepartments, addDepartment } = require('./util/department')
-const { getAllEmployees, addEmployee, deleteEmployee, updateEmployee } = require('./util/employee')
-const { getAllRoles, addRole, getManager } = require('./util/role')
-
-const promptUser = () => {
-    return inquirer.prompt([
-        {
-            type: 'list',
-            message: 'What would you like to do?',
-            name: 'options',
-            choices: ['Add Employee', 
-            'Update Employee Role', 
-            'View All Roles', 
-            'Add Role', 
-            'View All Departments', 
-            'Add Department']
-        },  
-    ])
-    .then((answer) => {
-        console.log(answer)
-        if(answer.options == 'Add Employee') {
-            return inquirer.prompt([
-                {
-                    type:'input',
-                    message: 'What is the employees first name?',
-                    name: 'firstname',
-                },
-                {
-                    type:'input',
-                    message: 'What is the employees last name?',
-                    name: 'lastname',
-                },
-                {
-                    type:'list',
-                    message: 'What is the employees role?',
-                    name: 'role',
-                    choices: getAllRoles(),
-                },
-                {
-                    type:'list',
-                    message: 'What is the employees manager?',
-                    name: 'manager',
-                    choices: getManager()
-                }
-            ])
-            .then((answers) => {
-                console.log(answers)
-                addEmployee(answers)
-            })
+function init() {
+    inquirer.prompt(questions).then(answer => {
+        if (answer.menu === "View all departments") {
+            viewAllDepts()
         }
-    
-        if(answer.options == 'Update Employee Role') {
-            return inquirer.prompt([
-                {
-                    type:'list',
-                    message: 'Which employees role do you want to update?',
-                    name:'employees',
-                    choices:getAllEmployees()
-                },
-                {
-                    type:'list',
-                    message: 'Which role do you want to assign the selected employee?',
-                    name:'role',
-                    choices:getAllRoles()
-                },
-            ])
-            .then(updateEmployee())
+        else if (answer.menu === "View all roles") {
+            viewAllRoles()
         }
-        if(answer.options == 'View All Roles') {
-            getAllRoles()
-            return
+        else if (answer.menu === "View all employees") {
+            viewAllEmployees()
         }
-        if(answer.options == 'Add Role') {
-            return inquirer.prompt([
-                {
-                    type:'input',
-                    message: 'What is the name of the role?',
-                    name: getAllRoles(),
-                },
-                {
-                    type:'input',
-                    message: 'What is the salary of the role?',
-                    name: 'salary',
-                },
-                {
-                    type:'list',
-                    message: 'What department does that role belong to?',
-                    name: 'deparments',
-                    choices: getAllDepartments()
-                },
-            ])
-            .then(addRole())
+        else if (answer.menu === "Add a department") {
+            addDept()
         }
-        if(answer.options == 'View All Departments') {
-            getAllDepartments()
+        else if (answer.menu === "Add a role") {
+            addRole()
         }
-        if(answer.options == 'Add Department') {
-            return inquirer.prompt([
-                {
-                    type:'input',
-                    message: 'What is the name of the department?',
-                    name: 'department',
-                }
-            ])
-            .then(addDepartment())
+        else if (answer.menu === "Add an employee") {
+            addEmployee()
+        }
+        else if (answer.menu === "Update an employee role") {
+            updateEmployee()
         }
     })
-};
-promptUser();
+        .catch(err => {
+            console.log(err)
+        })
+}
+function viewAllDepts() {
+    db.query("Select * from department", (err, data) => {
+        console.table(data);
+        init();
+    })
+}
+function viewAllRoles() {
+    db.query("Select * from role", (err, data) => {
+        console.table(data);
+        init();
+    })
+}
+function viewAllEmployees() {
+    db.query("Select * from employee", (err, data) => {
+        console.table(data);
+        init();
+    })
+}
+function addDept() {
+    inquirer.prompt(deptQuestion).then(answers => {
+        db.query("INSERT into department (name) values(?)", [answers.department], (err, data) => {
+            viewAllDepts();
+        })
+    })
+}
+function addRole() {
+    inquirer.prompt(roleQuestion).then(answers => {
+        db.query("INSERT into role (title, salary, department_id) values(?, ?, ?)", [answers.title, answers.salary, answers.department_id], (err, data) => {
+            viewAllRoles();
+        })
+    })
+}
+function addEmployee() {
+    inquirer.prompt(employeeQuestion).then(answers => {
+        db.query("INSERT into employee (first_name, last_name, role_id) VALUES(?, ?, ?)", [answers.first_name, answers.last_name, answers.role_id], (err, data) => {
+            viewAllEmployees();
+        })
+    })
+
+}
+function updateEmployee() {
+    inquirer.prompt(employeeUpdateRole).then(answers => {
+        db.query("SELECT * from employee", (err, data) => {
+        const employeeUpdateRole = [{
+            type: 'list',
+            name: 'employee_id',
+            message: 'What employee role would you like to change',
+        }];
+        
+        })
+    })
+
+}
+
+init();

@@ -1,8 +1,29 @@
 {
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "## Description This app uses Node.js and mySql to create a database that collects information about their employees in the command line and organizes it into the database.  ### Created with: - <a href='https://javascript.info/'>JavaScript</a> - <a href='https://nodejs.org/en/'>Node JS</a> - <a href='https://www.npmjs.com/package/inquirer'>Inquirer</a> - <a href='https://www.mysql.com/'>mySql</a> - <a href='https://www.npmjs.com/package/console.table'>console.table</a>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c1008h/Employee-Tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/c1008h/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/c1008h/Employee-Tracker#readme",
   "dependencies": {
     "console.table": "^0.10.0",
-    "express": "^4.18.1",
     "inquirer": "^8.2.4",
+    "mysql-server": "^1.0.5",
     "mysql2": "^2.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.18"
   }
 }
